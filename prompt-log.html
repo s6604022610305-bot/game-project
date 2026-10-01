@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>บันทึก Prompt ของโครงงาน Game Station</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600;700&family=IBM+Plex+Sans+Thai+Looped:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --paper:#E9EEF4; --sheet:#F7F9FC; --ink:#16233D; --pencil:#56647A;
+  --rule:#C7D2DF; --marker:#F2D75C; --markerInk:#3A2F00; --red:#B8453C; --blue:#2F5E9E;
+  --body:"Anuphan","Sarabun","Leelawadee UI","Tahoma",sans-serif;
+  --typed:"IBM Plex Sans Thai Looped","Anuphan","Tahoma",sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#111826; --sheet:#182234; --ink:#E4EAF3; --pencil:#9AA8BD;
+    --rule:#2C3A52; --marker:#D9BE45; --markerInk:#1E1800; --red:#E07A70; --blue:#8DB4EA;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#111826; --sheet:#182234; --ink:#E4EAF3; --pencil:#9AA8BD;
+  --rule:#2C3A52; --marker:#D9BE45; --markerInk:#1E1800; --red:#E07A70; --blue:#8DB4EA;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.7}
+.wrap{max-width:860px;margin:0 auto;padding:40px 20px 80px}
+header h1{font-size:clamp(28px,5vw,40px);line-height:1.25;margin:0 0 12px;font-weight:700;letter-spacing:-0.01em}
+header p{margin:0 0 10px;color:var(--pencil);max-width:68ch}
+.note{margin-top:20px;padding:14px 18px;border-left:4px solid var(--red);background:var(--sheet);border-radius:0 6px 6px 0;font-size:15.5px}
+.note strong{color:var(--red)}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);padding:14px 0 12px;margin-top:28px;border-bottom:1px solid var(--rule);overflow-x:auto}
+nav .tabs{display:flex;gap:8px;min-width:max-content}
+nav button{font:inherit;font-size:15px;font-weight:500;color:var(--ink);background:transparent;border:1.5px solid var(--rule);border-radius:999px;padding:6px 14px;cursor:pointer}
+nav button[aria-selected="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+nav button:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.game-head{margin:32px 0 8px}
+.game-head h2{font-size:26px;margin:0;line-height:1.3}
+.game-head .meta{color:var(--pencil);font-size:15px;margin-top:4px}
+.group-title{font-size:18px;font-weight:600;margin:28px 0 4px}
+ol.rounds{list-style:none;margin:12px 0 0;padding:0;position:relative}
+ol.rounds::before{content:"";position:absolute;left:19px;top:8px;bottom:8px;width:2px;background:var(--rule)}
+.round{position:relative;padding:0 0 26px 58px}
+.num{position:absolute;left:0;top:0;width:40px;height:40px;border-radius:50%;background:var(--marker);color:var(--markerInk);font-weight:700;display:grid;place-items:center;font-size:16px}
+.round h3{margin:6px 0 8px;font-size:17px;font-weight:600}
+.prompt{background:var(--sheet);border:1px solid var(--rule);border-radius:6px;padding:14px 16px;font-family:var(--typed);font-size:15.5px;line-height:1.75;white-space:pre-wrap;overflow-wrap:anywhere}
+.tag{display:inline-block;font-size:13px;color:var(--pencil);border:1px solid var(--rule);border-radius:4px;padding:0 6px;margin-left:6px;vertical-align:1px;font-weight:400}
+.after{margin:8px 0 0;font-size:15px;color:var(--pencil)}
+.after b{color:var(--red);font-weight:600}
+.empty{padding:18px;border:1.5px dashed var(--rule);border-radius:6px;color:var(--pencil)}
+footer{margin-top:48px;color:var(--pencil);font-size:14px;border-top:1px solid var(--rule);padding-top:16px}
+@media (max-width:560px){.round{padding-left:50px}.num{width:34px;height:34px;font-size:14px}ol.rounds::before{left:16px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>บันทึก Prompt ของโครงงาน Game Station</h1>
+  <p>รวม Prompt ที่สมาชิกแต่ละคนใช้สั่งงาน AI ในการพัฒนาเกมทั้ง 6 เกม เรียงตามลำดับรอบที่สั่ง พร้อมหมายเหตุสั้น ๆ ว่ารอบนั้นแก้ปัญหาอะไร รายละเอียดผลลัพธ์ของแต่ละรอบอยู่ในบทที่ 4 ของรายงาน</p>
+  <div class="note"><strong>หมายเหตุ</strong> หน้านี้เป็นการรวบรวม Prompt จากบันทึกของสมาชิก ไม่ใช่ลิงก์บทสนทนาต้นฉบับ จึงไม่มีคำตอบของ AI แสดงอยู่ รอบที่ติดป้าย "บันทึกบางส่วน" หรือ "สรุป" คือรอบที่ไม่ได้เก็บข้อความ Prompt ไว้ครบทุกคำ</div>
+</header>
+
+<nav aria-label="เลือกเกม"><div class="tabs" role="tablist" id="tabs"></div></nav>
+<main id="content"></main>
+
+<footer>คณะผู้จัดทำโครงงาน Game Station · เล่นเกมทั้งหมดได้ที่ game-project-1-80ah.onrender.com</footer>
+</div>
+
+<script>
+const GAMES = [
+{ id:"blackcase", name:"BLACK CASE", owner:"Tah", genre:"เกมสืบสวน", groups:[{ rounds:[
+{t:"ออกแบบโครงสร้างเกม (Role + CRISPE)", p:`คุณคือ Game Designer และ Web Developer ต้องการสร้างเกมเว็บไซต์ด้วย HTML, CSS และ JavaScript แบบ Vanilla JavaScript
+ชื่อเกมคือ BLACK CASE
+แนวเกมคือ Detective / Mystery / Investigation
+ผู้เล่นรับบทเป็นนักสืบที่ต้องตรวจสอบสถานที่เกิดเหตุ ค้นหาหลักฐาน วิเคราะห์ข้อมูล และตรวจสอบผู้ต้องสงสัย
+ต้องการให้เกมมีบรรยากาศลึกลับ ดาร์ก ทันสมัย และดูเหมือนเกมสืบสวนจริง
+เกมควรมีองค์ประกอบดังนี้
+- หน้าเริ่มเกม
+- ให้ผู้เล่นกรอกชื่อนักสืบ
+- เลือกตัวละครนักสืบมีชายและหญิง
+- หน้าเมนูเลือก Case
+- Case ที่ยังไม่ผ่านต้องถูก Lock
+- เมื่อผ่าน Case ก่อนหน้าจึงปลดล็อก Case ถัดไป
+- มีหน้าเล่นเกมที่ประกอบด้วย Sidebar, Scene, Evidence และ Suspect
+- มีภาพสถานที่เกิดเหตุเป็น Background
+- มีสิ่งของที่สามารถกดเพื่อตรวจสอบได้
+- เมื่อกดสิ่งของให้แสดงรายละเอียดหลักฐาน
+- มีระบบนับจำนวนหลักฐาน
+- มีระบบ Progress
+- มีระบบผู้ต้องสงสัย
+- มีระบบบันทึกเกม
+- มีเสียงและเพลงประกอบ
+- สามารถเล่นเกมจนจบ Case ได้
+ช่วยออกแบบโครงสร้างเกมและระบบทั้งหมดก่อน`, a:"ได้โครงสร้างเกม แต่ยังเป็นแค่แนวคิด"},
+{t:"สร้างเกมเวอร์ชันแรก", p:`จากแนวคิด BLACK CASE ที่กำหนดไว้ ให้สร้างเกมเวอร์ชันแรกที่สามารถเปิดเล่นใน Browser ได้จริง
+ใช้เฉพาะ HTML CSS JavaScript
+หน้า index.html ต้องเป็นหน้าเริ่มเกมและหน้าเลือก Case
+หน้า game.html เป็นหน้า Gameplay
+ให้สร้าง UI แบบเกมสืบสวนสีดำ/แดง มี Sidebar ซ้าย, Scene ตรงกลาง และ Sidebar ขวา Scene ของ Case 1 คือห้อง 307 ในอพาร์ตเมนต์แบล็กวูด ภายใน Scene ให้มี Interactive Hotspot 4 จุด ได้แก่
+โทรศัพท์มือถือ, กระดาษโน้ต, นาฬิกา, กุญแจ
+เมื่อผู้เล่นกดแต่ละจุดต้องเปิดรายละเอียดหลักฐาน
+ต้องมี Evidence Counter เช่น 0/4 → 4/4 เมื่อเก็บหลักฐานครบให้สามารถเข้าสู่ขั้นตอนวิเคราะห์คดีและตรวจสอบผู้ต้องสงสัยได้ เขียน Code ให้ครบทุกไฟล์และเชื่อมโยงกันให้สามารถเปิดเล่นได้จริง`, a:"Flow ของ Case และระบบจบ Case ยังไม่สมบูรณ์"},
+{t:"ปรับ UI ให้เป็นเกมสืบสวน", p:`ปรับปรุง UI ของ BLACK CASE ให้ดูเหมือนเกม Detective Investigation ที่จริงจังและเป็นมืออาชีพมากขึ้น
+ต้องการ Style ดังนี้ Dark Theme Black / Dark Gray / Dark Red มีเส้น Border บาง ๆ
+มี Effect แสงและเงา Typography ดูเป็นเกมสืบสวน UI ไม่ดูเหมือนเว็บไซต์ธรรมดา
+Scene ต้องเป็นจุดเด่นที่สุดของหน้าจอ Layout ต้องประกอบด้วย
+ด้านบน: BLACK CASE, Case Number, Location, เวลา, Sound, Music, Save, Menu
+ด้านซ้าย: รูปนักสืบ, ชื่อนักสืบ, Progress, Objective, Evidence, Suspects
+ตรงกลาง: ภาพสถานที่เกิดเหตุ, Interactive Hotspot, Case Dialogue
+ด้านขวา: Evidence, Suspects
+ให้รักษาระบบ Gameplay เดิมทั้งหมดและอย่าเปลี่ยน ID ของ Element ที่ JavaScript ใช้งานอยู่`, a:"หลังปรับ UI กด Hotspot แล้วไม่เกิดอะไรขึ้น"},
+{t:"แก้ Hotspot กดไม่ได้", p:`ตอนนี้ UI ของ BLACK CASE แสดงผลได้ แต่เมื่อกด Interactive Object เช่น โทรศัพท์ กระดาษโน้ต นาฬิกา และกุญแจ ไม่เกิดอะไรขึ้น ช่วยตรวจสอบระบบ JavaScript และ HTML ที่เกี่ยวข้องทั้งหมด ห้ามลบระบบเดิม
+ห้ามเปลี่ยนโครงสร้างเกมโดยไม่จำเป็น แก้เฉพาะส่วนที่ทำให้ Interactive Object ไม่ทำงาน
+หลังแก้ไขให้ตรวจสอบ Flow:
+กด Phone → เปิดรายละเอียด → ปิด Modal → Evidence 1/4 และทำแบบเดียวกันกับ Evidence ทั้ง 4 ชิ้น`, a:"ยังไม่มีระบบผู้ต้องสงสัย"},
+{t:"เพิ่มผู้ต้องสงสัย 3 คน", p:`เพิ่มระบบผู้ต้องสงสัยใน BLACK CASE Case 1 ต้องมีผู้ต้องสงสัย 3 คน
+01 JOHN MILLER ห้อง 308 · เพื่อนบ้าน
+02 SARAH REED ห้อง 305 · ผู้พักอาศัย
+03 MICHAEL GRAY ผู้ดูแลอาคาร
+แต่ละคนต้องมี รูปภาพ ชื่อ ห้อง/ตำแหน่ง Description คำให้การ บันทึกการสืบสวน
+เมื่อกดผู้ต้องสงสัยให้เปิด Modal แสดงข้อมูลแบบละเอียด อย่าให้รูปภาพผู้ต้องสงสัยมีขนาดใหญ่จนกินพื้นที่ Modal ทั้งหมด รูปควรมีขนาดพอดีกับข้อมูลข้อความ ต้องสามารถปิด Modal และกลับไปหน้าเกมได้`, a:"รูปผู้ต้องสงสัยยังใหญ่จนเกือบเต็ม Modal"},
+{t:"แก้ขนาดรูปผู้ต้องสงสัย", p:`ตอนนี้เมื่อกดดูผู้ต้องสงสัย รูปภาพมีขนาดใหญ่มากจนเกือบเต็ม Modal ทำให้ข้อความและข้อมูลอื่นถูกดันลงไป
+แก้เฉพาะส่วนของรูปผู้ต้องสงสัย`, a:"Case ยังข้ามขั้นตอนได้"},
+{t:"กำหนด Case Flow", p:`ทำให้ Case 1 มี Gameplay Flow ที่ชัดเจนและไม่สามารถข้ามขั้นตอนได้
+Flow ต้องเป็น
+1. เริ่มเกม
+2. Scene ห้อง 307
+3. ค้นหา Evidence 4 ชิ้น
+4. Evidence 4/4
+5. วิเคราะห์หลักฐาน
+6. ตรวจสอบผู้ต้องสงสัย
+7. เลือกผู้ต้องสงสัย
+8. แสดง Case Summary
+9. จบ CASE 1
+10. Unlock CASE 2
+แต่ละ State ต้องเปลี่ยน Objective และปุ่ม Continue ให้เหมาะสม ผู้เล่นต้องไม่สามารถจบ Case ก่อนเก็บหลักฐานครบ ต้องไม่สามารถจบ Case โดยยังไม่ได้เลือกผู้ต้องสงสัย`, a:"ผู้เล่นเลือกผู้ต้องสงสัยคนไหนก็ได้โดยไม่ต้องใช้หลักฐาน"},
+{t:"ผูก Logic กับหลักฐาน", p:`ปรับปรุง Logic ของ Case 1 ให้ผู้เล่นต้องใช้หลักฐานในการตัดสินใจ ไม่ใช่เพียงกดผู้ต้องสงสัยคนใดก็ได้
+หลักฐานสำคัญคือ
+โทรศัพท์ — มีข้อความเวลา 23:31
+กระดาษโน้ต — ระบุเวลา 23:40
+นาฬิกา — หยุดเวลา 23:40
+กุญแจ — มีหมายเลข 308
+เชื่อมโยงข้อมูลเหล่านี้กับผู้ต้องสงสัย
+John Miller อยู่ห้อง 308
+Michael Gray สามารถเข้าถึงกุญแจสำรอง
+Sarah ต้องตรวจสอบกับกล้องวงจรปิดใน Case ถัดไป
+อย่าเฉลยคนร้ายโดยตรง
+ให้ผู้เล่นอ่านข้อมูลและตัดสินใจเอง
+Case 1 ควรจบด้วยการเลือกผู้ต้องสงสัยและบันทึกการตัดสินใจ`, a:"ระบบจบ Case ยังไม่สมบูรณ์"},
+{t:"ระบบจบ Case 1", p:`ทำระบบจบ CASE 1 ให้สมบูรณ์เมื่อผู้เล่น
+- เก็บ Evidence ครบ 4/4
+- วิเคราะห์ Evidence
+- ตรวจสอบผู้ต้องสงสัย
+- เลือกผู้ต้องสงสัย
+ให้แสดงหน้า Case Summary Summary ต้องแสดง จำนวน Evidence ผู้ต้องสงสัยที่เลือก ข้อมูลสำคัญจากผู้ต้องสงสัย สถานะ CASE 1
+จากนั้นให้มีปุ่ม จบ CASE 1 เมื่อกดให้ ตั้ง Case 1 เป็น Complete, Unlock Case 2, บันทึก Save, เปลี่ยน Current Case เป็น 2, แสดงหน้าจอ Case Complete ห้ามให้ Case 2 ปลดล็อกก่อน Case 1 เสร็จ`, a:"Refresh แล้วข้อมูลหาย"},
+{t:"ระบบ Save Game", p:`เพิ่มระบบ Save Game ให้ BLACK CASE โดยใช้ LocalStorage ต้องบันทึกข้อมูลต่อไปนี้
+1. Player Name
+2. Gender
+3. Current Case
+4. Evidence ที่เก็บได้
+5. Progress
+6. Case Stage
+7. Selected Suspect
+8. Reviewed Suspects
+9. Case Completed
+10. เวลาที่ Save
+เมื่อ Refresh Browser หรือกลับเข้ามาใหม่ ต้องสามารถ Restore ข้อมูลเดิมได้ หาก Case 1 จบแล้ว ต้องไม่ทำให้สถานะ Case 1 กลับมาเป็นเริ่มต้นใหม่ หาก Case 2 ถูกปลดล็อกแล้ว ต้องยังคงปลดล็อกอยู่`, a:"ยังมีแค่ Case 1"},
+{t:"สร้าง Case 2", p:`จากเนื้อเรื่อง CASE 1 ของ BLACK CASE ให้สร้าง CASE 2 ที่ต่อเนื่องจากหลักฐานเดิม
+Case 2 ไม่ควรใช้ห้อง 307 ซ้ำ
+ให้เปลี่ยนสถานที่เป็นห้องควบคุมกล้องวงจรปิดของอาคาร ผู้เล่นต้องตรวจสอบหลักฐานใหม่
+1. ภาพจากกล้องวงจรปิด
+2. กุญแจสำรอง
+3. จดหมายที่ถูกฉีก
+4. โทรศัพท์ของ John
+หลักฐานของ Case 2 ต้องเชื่อมโยงกับ Case 1 ผู้เล่นควรสามารถนำข้อมูลจาก Case 1 มาใช้ตีความ Case 2
+ต้องมีระบบ Evidence, Investigation, Suspects, Dialogue, Save, Case Complete
+และเมื่อจบ Case 2 ต้องปลดล็อก Case 3`, a:"ยังไม่มีบทสรุปของเรื่อง"},
+{t:"สร้าง Case 3 และ Ending", p:`สร้าง CASE 3 ให้เป็นบทสรุปของ BLACK CASE
+Case 3 ต้องไม่ใช่เพียงการเก็บหลักฐานแบบ Case 1 แต่ต้องเป็นขั้นตอนที่ผู้เล่นนำหลักฐานจาก Case 1 และ Case 2 มาประกอบกัน สถานที่คือสำนักงาน/ห้องเก็บเอกสารของผู้ดูแลอาคาร
+ภายในห้องมี
+1. ตู้เอกสาร
+2. แฟ้ม
+3. ตู้กุญแจ
+4. โทรศัพท์
+5. เอกสารที่ถูกฉีก
+6. Board ที่มีข้อมูลคดี
+ผู้เล่นต้องค้นหาหลักฐานชุดสุดท้าย จากนั้นต้องวิเคราะห์ความเชื่อมโยงของหลักฐานจากทั้ง 3 Case
+ขั้นตอนสุดท้ายต้องมีการเลือกว่าบุคคลใดเป็นผู้ต้องสงสัยหลัก/ผู้รับผิดชอบเหตุการณ์ หลังเลือกแล้วให้แสดงผลว่า หลักฐานใดสนับสนุนการตัดสินใจ หลักฐานใดขัดแย้ง เหตุการณ์ทั้งหมดเกิดขึ้นอย่างไร จากนั้นแสดง Ending ของเกม ต้องมีปุ่มเล่นใหม่และกลับหน้าเมนู`, a:"ทดสอบจริงพบปุ่มบางปุ่มกดไม่ได้"},
+{t:"ตรวจบั๊กทั้งระบบ", p:`ทดสอบ BLACK CASE จริงใน Browser แล้วพบปัญหา ปุ่มบางปุ่มกดไม่ได้
+ตรวจสอบ Code ทั้งระบบโดยเน้น
+1. HTML ID
+2. Class Name
+3. JavaScript Query Selector
+4. Event Listener
+5. Modal
+6. LocalStorage
+7. Script Loading Order
+8. Path ของ Image
+9. Path ของ Audio
+อย่าเขียนระบบใหม่ทั้งหมด ให้รักษา Gameplay และ UI เดิม แก้เฉพาะจุดที่ผิด`, a:""},
+{t:"Final Review ด้วย Checklist", p:`ทำ Final Review ของเกม BLACK CASE ตรวจสอบเกมตั้งแต่ต้นจนจบ
+Gameplay: เริ่มเกมได้, ตั้งชื่อได้, เลือกตัวละครได้, เข้า Case 1 ได้, กด Evidence ได้ทุกชิ้น, Evidence Counter ทำงาน, วิเคราะห์ Evidence ได้, ตรวจสอบผู้ต้องสงสัยได้, เลือกผู้ต้องสงสัยได้, Case Summary ทำงาน, จบ Case 1 ได้, Case 2 Unlock, Case 2 เล่นได้, Case 3 เล่นได้, เกมมี Ending
+System: Save ทำงาน, Load ทำงาน, Sound ทำงาน, Music ทำงาน, Menu ทำงาน, Modal ปิดได้, ไม่มี Broken Image, ไม่มี Broken Audio, ไม่มี JavaScript Error
+UI: ตัวอักษรอ่านง่าย, รูปไม่ใหญ่เกินไป, Modal ไม่ล้นหน้าจอ, Responsive, UI มี Style เดียวกันทุก Case`, a:""}
+]}]},
+{ id:"qiki", name:"QIKI", owner:"Tah", genre:"เกมเลี้ยงสัตว์", groups:[{ rounds:[
+{t:"ข้อกำหนดเริ่มต้นของเกม", p:`ต้องการสร้างเกมเลี้ยงสัตว์ขนาดเล็ก โดยต้องเป็น Web Game
+ชื่อเกม QIKI
+ข้อกำหนด:
+1. ใช้ HTML, CSS และ JavaScript
+2. เกมต้องสามารถเปิดผ่าน VS Code และ Live Server ได้
+3. ต้องมีหน้าแรกสำหรับเลือกสัตว์เลี้ยง
+4. ผู้เล่นสามารถเลือกสัตว์ได้ 3 ชนิด ได้แก่ สุนัข แมว และกระต่าย
+5. ผู้เล่นสามารถตั้งชื่อสัตว์เลี้ยงได้
+6. เมื่อเริ่มเกมต้องเข้าสู่หน้าหลักของเกม
+7. ต้องมีค่าความหิว ความสุข ความสะอาด และพลังงาน
+8. ต้องมีปุ่มให้อาหาร เล่น อาบน้ำ และพักผ่อน
+9. ต้องมีระบบเหรียญและเลเวล
+10. ต้องมีระบบบันทึกเกมด้วย LocalStorage
+11. ต้องสามารถกลับไปหน้าแรกได้
+12. ออกแบบให้มีความน่ารัก อบอุ่น และเหมาะกับเกมเลี้ยงสัตว์
+13. แยกไฟล์ HTML, CSS และ JavaScript ออกจากกัน
+14. จัดโครงสร้างโฟลเดอร์ให้เข้าใจง่าย และสามารถนำไปเปิดใน VS Code ได้ทันที
+ช่วยออกแบบโครงสร้างไฟล์ทั้งหมดก่อน แล้วสร้างโค้ดเริ่มต้นของเกมให้ครบ`},
+{t:"ปรับ UI หน้าห้องสัตว์เลี้ยง", p:`ช่วยปรับปรุง UI ของเกม QIKI ให้มีบรรยากาศเหมือนเกมเลี้ยงสัตว์
+ต้องการให้หน้าหลักของเกมมี:
+- ห้องสำหรับสัตว์เลี้ยง
+- สัตว์อยู่ตรงกลางห้อง
+- มีพื้นหรือพรมสำหรับให้น้องอยู่
+- มีหน้าต่างและแสงธรรมชาติ
+- มีเฟอร์นิเจอร์และของตกแต่งที่ดูสมเหตุสมผล
+- มีแถบข้อมูลสัตว์ด้านซ้าย
+- มีค่าความหิว ความสุข ความสะอาด และพลังงานด้านขวา
+- มีปุ่ม Feed / Play / Bath / Sleep
+- มีเหรียญด้านบน
+- มีปุ่มออกจากเกม
+- มีข้อความแนะนำการเล่น
+- ใช้โทนสี pastel อบอุ่น
+- UI ต้องดูเป็นเกมจริง ไม่ใช่หน้าเว็บไซต์ธรรมดา
+ให้คงระบบคงเดิมไว้ และแก้เฉพาะส่วนที่จำเป็น อย่าทำให้ระบบเดิมหาย`},
+{t:"ใช้รูปสัตว์ของโปรเจกต์", p:`ให้ใช้รูปสัตว์เลี้ยงที่มีอยู่ในโปรเจกต์แทน ได้แก่
+- assets/pets/dog.png
+- assets/pets/cat.png
+- assets/pets/rabbit.png
+ต้องการให้ระบบทำงานดังนี้:
+- ใช้รูปเดิมเป็นตัวละคร
+- รูปต้องเปลี่ยนตามสัตว์ที่ผู้เล่นเลือก
+- ไม่ต้องใช้โมเดล 2D เพิ่ม
+- ไม่ต้องใช้ Sprite Sheet
+- เพิ่ม CSS Animation เล็กน้อยเพื่อให้ดูเหมือนสัตว์มีชีวิต
+- มี Idle Animation
+- เมื่อกดสัตว์ให้มี Action Animation
+- เมื่อให้อาหาร เล่น อาบน้ำ หรือพักผ่อน สามารถแสดง Animation ที่แตกต่างกันได้
+อย่าเปลี่ยนรูปสัตว์ที่มีอยู่`},
+{t:"หน้าสร้างสัตว์เลี้ยง", p:`ปรับหน้าแรกของเกมให้เป็นหน้าเริ่มต้นสำหรับสร้างสัตว์เลี้ยง
+ต้องมีส่วนต่อไปนี้:
+ฝั่งซ้าย: 01 เลือกสัตว์เลี้ยง
+มีสัตว์: สุนัข, แมว, กระต่าย
+เมื่อเลือกสัตว์ต้องมี Active State ชัดเจน
+ฝั่งขวา: 02 ตั้งชื่อให้น้อง
+แสดงรูปสัตว์ที่เลือก และมีช่องกรอกชื่อ
+มีปุ่ม: เริ่มเลี้ยงเลย และปุ่ม: เล่นต่อจากเกมที่บันทึกไว้
+เมื่อกดเริ่มเกม:
+- ตรวจสอบว่ามีชื่อหรือไม่
+- บันทึกชนิดสัตว์
+- บันทึกชื่อ
+- บันทึกค่าเริ่มต้นของ Status
+- บันทึกข้อมูลด้วย LocalStorage
+- เปิด game.html ต้องคงดีไซน์เดิมและแยก HTML/CSS/JS`},
+{t:"Animation ของรูป Preview", p:`อยากให้สัตว์ในส่วน Preview ตอนตั้งชื่อมี Animation เล็กน้อย โดยไม่เปลี่ยนรูปสัตว์
+ต้องการ:
+- Idle Animation
+- ขยับขึ้นลงเบา ๆ
+- มีการหมุนเล็กน้อย
+- ไม่ให้ Animation รุนแรง
+- เมื่อเปลี่ยนสุนัข/แมว/กระต่าย ต้องเปลี่ยนรูปทันที
+- Animation ต้องเริ่มใหม่หลังจากเปลี่ยนรูป
+- ห้ามเพิ่มไฟล์โมเดลหรือ Sprite ใหม่
+ให้แก้เฉพาะ CSS และ JavaScript ที่จำเป็น และส่งโค้ดเต็มของไฟล์ที่แก้`},
+{t:"Layout แบบ Cozy Pet Game", p:`ฉันต้องการให้หน้าหลักของเกมมีบรรยากาศและ Layout คล้ายเกม Pet Care / Cozy Pet Game
+ต้องมี:
+- ห้องเป็นพื้นที่หลัก
+- สัตว์อยู่บริเวณพื้น
+- สัตว์สามารถขยับซ้ายขวาได้เฉพาะบริเวณพื้น
+- ห้ามเดินทั่วหน้าจอ
+- ไม่ต้องใช้โมเดล
+- ใช้ PNG สัตว์เดิม
+- มี Profile Card
+- มี Status Panel
+- มี Coin
+- มี Action Buttons
+- มีข้อความแสดง Action
+- มีปุ่ม Exit
+- ใช้ roompet.png เป็นภาพห้อง
+- ไม่ต้องใช้ sofa.png, rug.png หรือ plant.png เป็นภาพ Overlay ถ้าไม่จำเป็น
+ให้ดีไซน์ดูเหมือนเกมจริง แต่ต้องคงระบบเดิมของเกมไว้`},
+{t:"Interaction กับสัตว์", p:`เพิ่มระบบ Interaction กับสัตว์
+เมื่อคลิกสัตว์:
+- ให้สัตว์มี Animation
+- แสดงหัวใจหรือ Effect เล็ก ๆ
+- แสดงข้อความว่าน้องมีความสุข
+- เพิ่ม Happiness เล็กน้อย
+- ลด Energy เล็กน้อย
+- ต้องมี Cooldown หรือจำกัดการกด เพื่อป้องกันการกดรัว ๆ แล้วได้ค่ามากเกินไป
+เมื่อกด Feed: Hunger เพิ่ม, Energy ลดเล็กน้อย, Happiness เพิ่มเล็กน้อย
+เมื่อกด Play: Happiness เพิ่ม, Energy ลด, Hunger ลดเล็กน้อย
+เมื่อกด Bath: Cleanliness เพิ่ม, Energy ลด, Happiness ลดหรือเพิ่มเล็กน้อยตามความสมเหตุสมผล
+เมื่อกด Sleep: Energy เพิ่ม, เมื่อพักเสร็จ Status อื่น ๆ ต้องลดลงตามเวลา`},
+{t:"Cursor รูปลูกบอล", p:`ฉันมีไฟล์ Cursor ชื่อ: assets/decorations/ball-cursor.png
+ต้องการใช้เป็น Mouse Cursor ของเกม
+ต้องการให้:
+- Cursor หลักในพื้นที่ห้องเป็นรูปบอล
+- Cursor บนสัตว์ยังสามารถคลิกได้
+- Cursor บนปุ่มต่าง ๆ ใช้รูปบอลด้วยถ้าเหมาะสม
+- ใช้ fallback เป็น pointer/crosshair หาก Browser ไม่รองรับ
+- ห้ามเปลี่ยน UI
+ตรวจสอบ Relative Path ให้ถูกต้องตามตำแหน่ง game.html`},
+{t:"ระบบ Save หลายตัวละคร", p:`เพิ่มระบบ Save Game ให้เกม PAWLY/QIKI
+ต้องการระบบดังนี้:
+1. สามารถสร้าง Save Game ได้
+2. Save ต้องเก็บ: ชื่อสัตว์, ชนิดสัตว์, รูปสัตว์, Hunger, Happiness, Cleanliness, Energy, Coins, Level, EXP, เวลา Save ล่าสุด
+3. ใช้ LocalStorage
+4. หน้าแรกต้องมีรายการ Save
+5. ผู้เล่นสามารถเลือก Save เพื่อเล่นต่อ
+6. ผู้เล่นสามารถลบ Save ได้
+7. ห้ามสร้างตัวละครที่มีชื่อซ้ำกัน
+8. หากชื่อซ้ำ ต้องแจ้งผู้เล่น
+9. การลบ Save ต้องมีการยืนยัน
+10. การกด Exit จากเกมต้องกลับหน้าแรก
+11. เมื่อกลับหน้าแรก ข้อมูลต้องยังอยู่
+12. อย่าเปลี่ยนหน้าตา UI เดิมมากเกินไป`},
+{t:"ระบบเสียง", p:`เพิ่มระบบเสียงให้เกมโดยยังคง UI เดิม
+ต้องการเสียงน่ารักและเหมาะกับเกมเลี้ยงสัตว์ เช่น:
+เสียงกดปุ่ม, เสียงให้อาหาร, เสียงเล่น, เสียงอาบน้ำ, เสียงพักผ่อน, เสียงคลิกสัตว์, เสียง Level Up, เสียงทำภารกิจสำเร็จ, Background Music แบบ Cozy
+ต้องมี:
+- เปิด/ปิดเสียง
+- ไม่ให้เสียงเล่นซ้อนกันมากเกินไป
+- ถ้า Browser block autoplay ให้เริ่มเพลงหลังผู้เล่นกดปุ่ม
+- ใช้ไฟล์เสียงใน assets/sounds
+- ถ้าไฟล์เสียงไม่มี ให้ระบบไม่ Error`},
+{t:"ระบบ Quest", p:`เพิ่มระบบภารกิจให้เกมเพื่อให้การเลี้ยงสัตว์มีเป้าหมายมากขึ้น
+ตัวอย่างภารกิจ:
+- ให้อาหาร 10 ครั้ง
+- เล่นกับน้อง 10 ครั้ง
+- อาบน้ำ 5 ครั้ง
+- พักผ่อน 5 ครั้ง
+- คลิกเล่นกับสัตว์ 10 ครั้ง
+- ดูแลสัตว์ให้ Status อยู่ในระดับที่กำหนด
+แต่ละภารกิจต้องมี: ชื่อ, คำอธิบาย, Progress, Target, Reward EXP, Reward Coins, สถานะ Completed
+เมื่อทำสำเร็จ: เพิ่ม EXP, เพิ่ม Coins, เล่นเสียงหรือ Animation, ไม่สามารถรับรางวัลซ้ำได้
+เมื่อภารกิจสำเร็จแล้วให้เปลี่ยนเป็นภารกิจใหม่ เพื่อให้เกมสามารถเล่นต่อได้เรื่อย ๆ`},
+{t:"ระบบ Level และ EXP Curve", p:`ปรับระบบ Level ให้มีประโยชน์จริง
+ไม่ต้องการให้ผู้เล่นสามารถกดสัตว์ซ้ำ ๆ แล้ว Level เพิ่มเร็วเกินไป
+กำหนดหลักการ:
+- การทำกิจกรรมให้ EXP
+- Quest ให้ EXP มากกว่า Action ปกติ
+- การคลิกสัตว์ให้ EXP น้อยมาก หรือไม่มี EXP ทุกครั้ง
+- ต้องมี Cooldown
+- Level ต้องใช้ EXP มากขึ้นเมื่อ Level สูงขึ้น
+- เมื่อ Level Up ให้มี Effect และเสียง
+- Level สามารถใช้ปลดล็อก Feature หรือเพิ่ม Reward ได้
+ช่วยออกแบบ EXP Curve ที่เหมาะสมกับเกมเลี้ยงสัตว์ขนาดเล็ก`},
+{t:"Status ลดลงตามเวลา", p:`ปรับระบบ Status ของเกมให้มีความสมเหตุสมผลและมีการเปลี่ยนแปลงตามเวลา
+มี 4 ค่า: Hunger, Happiness, Cleanliness, Energy
+ต้องการให้ค่า Status ลดลงเองตามเวลา ไม่ใช่เปิดเกมไว้ 5-10 นาทีแล้วค่าไม่เปลี่ยน
+หลักการ:
+- Hunger ลดลงเรื่อย ๆ
+- Happiness ลดลงช้ากว่า Hunger
+- Cleanliness ลดลงตามเวลาและกิจกรรม
+- Energy ลดลงจากการทำกิจกรรม
+- Energy ไม่ควรลดเร็วเกินไป
+- ทุกค่าต้องไม่ต่ำกว่า 0
+- ทุกค่าไม่เกิน 100
+- เมื่อค่าใดต่ำมาก ควรมีข้อความเตือน
+- Save ต้องเก็บเวลาที่เล่นล่าสุด
+- เมื่อเปิดเกมใหม่ ให้คำนวณเวลาที่ผ่านไปและปรับ Status ตามเวลาที่หายไป
+ทำให้เกมสมเหตุสมผลสำหรับการเล่นระยะยาว`},
+{t:"จำกัด Action เมื่อ Status เต็ม", p:`ปรับระบบ Action ให้สมเหตุสมผล
+ถ้า Status เต็ม 100 แล้ว:
+Hunger = 100 ไม่สามารถให้อาหารได้
+Happiness = 100 ไม่สามารถเล่นเพื่อเพิ่ม Happiness ได้
+Cleanliness = 100 ไม่สามารถอาบน้ำเพื่อเพิ่ม Cleanliness ได้
+Energy = 100 ไม่จำเป็นต้องพักผ่อน
+เมื่อกดปุ่มที่ไม่สามารถใช้ได้:
+- ไม่ทำ Action
+- ไม่หักค่าอื่น
+- ไม่ให้ EXP
+- แสดงข้อความบอกเหตุผล เช่น "น้องอิ่มแล้ว!" "น้องมีความสุขเต็มที่แล้ว!" "น้องสะอาดแล้ว!" "น้องยังไม่เหนื่อยเลย!"
+เมื่อ Status ลดลงแล้วจึงสามารถใช้ Action ได้อีก`},
+{t:"ปรับระบบ Sleep", p:`ปรับระบบ Sleep / Rest
+เมื่อกดพักผ่อน:
+- ต้องมีระยะเวลาในการพัก
+- Energy เพิ่มขึ้น
+- ระหว่างพักไม่สามารถทำ Action อื่นได้
+- เมื่อพักเสร็จต้องปรับ Status อื่นด้วย
+หลังจากพัก:
+- Hunger ลดลง
+- Happiness ลดลงเล็กน้อย
+- Cleanliness ลดลง
+- Energy เพิ่มขึ้นอย่างชัดเจน
+ไม่ต้องการให้ Sleep เป็นวิธีที่สามารถทำให้ Energy เต็ม โดยที่ Status อื่นยังอยู่เท่าเดิม
+ให้ค่าที่ลดลงมีระดับที่สมเหตุสมผลกับเวลาพัก และไม่ลดจนหมดในครั้งเดียว`},
+{t:"Gameplay Balance", p:`ปรับ Gameplay Balance
+ไม่ต้องการให้ผู้เล่นสามารถกดปุ่ม Feed / Play / Bath / Pet รัว ๆ เพื่อเพิ่ม Status, EXP หรือ Coins อย่างรวดเร็ว
+ให้เพิ่ม:
+- Cooldown
+- จำกัด EXP จากการคลิกสัตว์
+- จำกัด Reward จาก Action
+- Action แต่ละชนิดมีผลต่อ Status ที่แตกต่างกัน
+- ต้องใช้ Energy ในการทำกิจกรรม
+- หาก Energy ต่ำเกินไป ให้ไม่สามารถทำกิจกรรมบางอย่างได้
+- Quest ควรเป็นช่องทางหลักในการได้รับ EXP จำนวนมาก
+ทำให้เกมมีจังหวะการเล่นแบบดูแลสัตว์จริง ไม่ใช่การกดปุ่มรัว ๆ`},
+{t:"Animation การเดิน", p:`เพิ่ม Animation การเดินให้สัตว์โดยใช้รูป PNG เดิม ไม่ใช้ Sprite Model เพิ่ม
+ต้องการ:
+- สัตว์สามารถเดินซ้ายและขวา
+- เดินเฉพาะบริเวณพื้น
+- ห้ามเดินขึ้นบน UI
+- ห้ามเดินผ่าน Panel
+- ห้ามเดินทั่วหน้าจอ
+- กำหนดพื้นที่เดินซ้ายและขวา
+- เมื่อเดินถึงขอบให้กลับทิศ
+- สามารถหยุดพักและ Idle ได้
+- เมื่อผู้เล่นคลิกสัตว์ ให้หยุดเดินชั่วคราวและเล่น Action Animation
+- รูปต้องหันซ้าย/ขวาตามทิศทางการเดิน
+- ต้องใช้รูปสัตว์เดิม
+ทำด้วย CSS + JavaScript`},
+{t:"แก้ Path รูปสัตว์", p:`ตอนนี้เปิดเกมได้แล้ว แต่รูปสัตว์ใน game.html ไม่แสดง เนื่องจาก game.html อยู่ใน /game/
+ห้ามเปลี่ยน UI หรือระบบเกม แก้เฉพาะ Path ที่ผิด`},
+{t:"คืนหน้าตาเดิมหลังแก้ Path", p:`ตอนนี้เกมเปิดได้แล้ว แต่หลังจากแก้ Path หน้าตาและระบบบางส่วนไม่เหมือนเวอร์ชันเดิม
+ให้ยึดไฟล์เดิมเป็นต้นฉบับ
+สิ่งที่ห้ามเปลี่ยน: Layout, สี, ขนาด Panel, รูปสัตว์, Room Background, ปุ่ม, Status Bar, Coin, Animation, ระบบเดิม
+แก้เฉพาะ: Relative Path, Link CSS, Script src, Image src, Cursor path, Navigation ระหว่าง index.html และ game.html
+ต้องการให้ผลลัพธ์เหมือนเวอร์ชันเดิมทุกอย่าง แต่เปิดใช้งานได้ถูกต้อง`}
+]}]},
+{ id:"abyss", name:"Abyss Dungeon Crawler", owner:"Toey", genre:"Minesweeper ผสม RPG", groups:[
+{ title:"Prompt สำหรับสร้างเกม", missing:"ยังไม่ได้รวบรวม Prompt ที่ใช้สร้างเกมส่วนนี้" },
+{ title:"Prompt สำหรับวางโครงรายงาน", rounds:[
+{t:"v1 Zero-shot", p:`ช่วยเขียนเล่มรายงานโครงงานวิชา AI พัฒนาเว็บเกม Game Station และเกม Minesweeper RPG ให้หน่อย มีบทนำ สถาปัตยกรรม และสรุป`, a:"เนื้อหากว้างเกินไป และ AI แต่งฟีเจอร์ที่ไม่มีจริง"},
+{t:"v2 Role + โครงสร้าง 5 บท", p:`คุณคือ Technical Academic Writer ผู้เชี่ยวชาญการเขียนรายงานโครงงานวิศวกรรมคอมพิวเตอร์ จงเขียนร่างรายงานโครงงานพัฒนาเกม 'Game Station' และ 'Minesweeper RPG' โดยแบ่งเป็น 5 บท: 1.บทนำ 2.ทฤษฎีและเทคนิค LLM 3.การออกแบบระบบ 4.ผลการทดลอง 5.สรุปผล เน้นระบุภาษา HTML/CSS/JS และ Web Audio API`, a:"เนื้อหายาวจน AI ตัดทอน และยังเป็นคำสั่งก้อนเดียว"},
+{t:"v3 CRISPE + CoT + Prompt Chaining", p:`[Capacity & Role]
+ทำหน้าที่เป็น Lead Software Architect และ Technical Document Specialist ประจำโครงงานวิศวกรรมซอฟต์แวร์
+
+[Insight / Context]
+กลุ่มของเราพัฒนาโปรเจกต์ "Game Station" ซึ่งเป็นแพลตฟอร์มศูนย์รวมเว็บเกม Retro และมีเกมไฮไลต์คือ "Minesweeper RPG: Dungeon Crawler" (ใช้ HTML5, Modern Vanilla JS แบบ ES Modules, CSS Animations, Web Audio API Seamless Looping) การพัฒนาทั้งหมดเกิดจากการ Pair-Programming ร่วมกับ LLM โดยใช้เทคนิค Prompt Engineering ในการสร้างระบบต่อสู้, ระบบเสียง, ดันเจี้ยน และกราฟิก
+
+[Statement]
+เรากำลังจัดทำเล่มรายงานเพื่อส่งในรายวิชา AI/Prompt Engineering ขั้นแรกนี้ ห้ามเพิ่งเขียนเนื้อหาทั้งหมด แต่ให้ทำตามขั้นตอนต่อไปนี้ (Think Step-by-Step):
+1. วิเคราะห์และร่างสารบัญรายงานฉบับสมบูรณ์ (5 บทหลัก)
+2. ในบทที่ 3 (วิธีการดำเนินงาน) ให้กำหนดหมวดหมู่ "Prompt Engineering Journey" ที่แสดงการสั่งงาน LLM ตั้งแต่เริ่มโครงร่างเกม จนถึงการปรับแต่งโค้ดขั้นสูง
+3. ระบุตารางและจุดที่ต้องแนบ Prompt Logs และโค้ดตัวอย่างในแต่ละบท
+
+[Personality & Format]
+ภาษาทางการเชิงวิชาการ (Formal Academic Tone) ใช้ Markdown พร้อมจัดแบ่งหัวข้อย่อยและตารางโครงสร้างชัดเจน
+
+[Experiment / Confirmation]
+ให้ส่งเฉพาะแผนผังโครงร่างบท (Comprehensive Outline) และรอการยืนยันก่อนเริ่มเขียนเนื้อหาในบทถัดไป`, a:""}
+]}]},
+{ id:"witch", name:"Witch's Little Shop", owner:"Toey", genre:"เกมจำลองร้านปรุงยา", groups:[{ rounds:[
+{t:"แนวคิดและโครงสร้างเกม", p:`คุณคือ Game Designer และ Front-end Game Developer ช่วยออกแบบเกมเว็บขนาดเล็กชื่อ 'Witch's Little Shop' โดยใช้ HTML, CSS และ JavaScript เท่านั้น เกมเป็นร้านปรุงยาของแม่มด ผู้เล่นต้องเดินภายในร้าน รับออเดอร์จากลูกค้า เลือกวัตถุดิบ 2 ชนิด ปรุงยา และส่งยาให้ลูกค้า ช่วยออกแบบ gameplay loop, หน้าจอที่ต้องมี, ระบบหลัก และโครงสร้างไฟล์ที่เหมาะสำหรับนักศึกษาที่พัฒนาใน VS Code`, a:"ได้ภาพรวม แต่ยังไม่มีรายละเอียดระบบ"},
+{t:"รายละเอียดระบบการเล่น", p:`จากโครงสร้างเกม Witch's Little Shop ที่ออกแบบไว้ ช่วยพัฒนาระบบการเล่นให้ชัดขึ้น โดยกำหนดสูตรยาอย่างน้อย 5 สูตร ลูกค้า 4 คนต่อวัน ระบบรับออเดอร์ ระบบ inventory ที่ถือวัตถุดิบได้ครั้งละ 2 ชนิด ระบบปรุงยา และระบบส่งยาให้ลูกค้า ขอให้เขียน logic เป็น JavaScript แบบแบ่งเป็นฟังก์ชันชัดเจน และต้องสามารถนำไปเชื่อมกับ HTML/CSS เดิมได้`, a:"เกมเล่นได้ แต่การปรุงยายังเป็นแค่การกดปุ่ม"},
+{t:"มินิเกมคนยา", p:`ระบบเกมทำงานได้แล้ว แต่ขั้นตอนปรุงยายังเป็นเพียงการกดปุ่มและรู้ผลทันที ทำให้เกมยังไม่สนุกพอ ช่วยออกแบบ minigame สำหรับขั้นตอนปรุงยา โดยใช้คีย์บอร์ด เช่น การกด A/D สลับเพื่อคนยา และกด Space ให้ตรงจังหวะ พร้อมระบบวัดคุณภาพยา เช่น Perfect, Good และ Miss โดยต้องไม่เปลี่ยนระบบสูตรยาเดิม และต้องเชื่อมเข้ากับ JavaScript เดิมได้`},
+{t:"ภาพ เสียง และ feedback", p:`Minigame ปรุงยาทำงานแล้ว ช่วยปรับให้ผู้เล่นรู้สึกตอบสนองมากขึ้น โดยเพิ่ม particle effect, แสงเวทมนตร์, animation ของหม้อปรุงยา, sound effect ตอนสำเร็จ/พลาด และโบนัสเหรียญตามคุณภาพการปรุง โดยคงโครงสร้าง gameplay เดิม และหลีกเลี่ยงการสร้างระบบใหม่ที่ไม่จำเป็น`}
+]}]},
+{ id:"tower", name:"Sky Stack Tower", owner:"TubTim", genre:"เกมซ้อนบล็อก", groups:[{ rounds:[
+{t:"สร้างเกมจากภาพหน้าปก", k:"partial", p:`[ส่งภาพหน้าปกเกมแนบไปด้วย]
+ช่วยแก้เกมให้สมดุลกับหน้าปก...เพิ่มเสียง
+แยก html java css แยกกันมาให้ก้อปวางได้เลย`, a:"AI ส่งเป็นไฟล์แนบ ไม่ใช่โค้ดในแชท"},
+{t:"ขอโค้ดเป็นข้อความ", k:"summary", p:`ขอโค้ดทั้ง 3 ไฟล์ (HTML, CSS, JavaScript) เป็นข้อความในแชทเพื่อคัดลอกไปวางเอง`, a:"ยังไม่แน่ใจวิธีจัดเรียงไฟล์ AI จึงอธิบายการสร้างไฟล์ทีละขั้น"},
+{t:"แจ้งอาการเปิดไม่ขึ้น", k:"partial", p:`เปิดไม่ได้
+ไม่มีปุ่มให้กด`, a:"สาเหตุคือหน่วย cqw/cqh ที่เบราว์เซอร์บางรุ่นไม่รองรับ"},
+{t:"แก้ให้เปิดได้ทุกเบราว์เซอร์", k:"summary", p:`ขอให้แก้ปัญหาเกมเปิดไม่ขึ้น`, a:"AI รวมเป็นไฟล์เดียว เปลี่ยน cqw เป็น calc() และเปลี่ยน roundRect() เป็นฟังก์ชันวาดมุมมนเอง"}
+]}]},
+{ id:"rocket", name:"จรวดพิฆาต", owner:"TubTim", genre:"เกมยิงยานอวกาศ", groups:[{ rounds:[
+{t:"เกมยิงจรวดพื้นฐาน", k:"summary", p:`เกมยิงจรวด ผู้เล่นคนเดียว ยิงอุกกาบาตและยานเอเลี่ยน ใช้ HTML CSS JS`},
+{t:"เพิ่มบอส อัปเกรด และไอเทม", k:"summary", p:`เพิ่มบอส, อัปเกรดยาน, ศัตรูเลือดเพิ่มตามเลเวล, ไอเทมหลากหลาย, ยานเวอร์ ๆ`, a:"คำสั่งเดียวรวม 5 ฟีเจอร์ ต้องแยกระบบไม่ให้ชนกัน"},
+{t:"ขอโค้ด", k:"partial", p:`ขอโค้ด`, a:"AI ส่งเป็นไฟล์แนบแทนโค้ดในแชท"},
+{t:"ปรับการควบคุมและผูกอัปเกรดกับตัวยาน", k:"partial", p:`รู้สึกแข็งเกินไป
+อยากให้มีการอัพเกรดไอเทมแล้วยานไปในตัวเลย`, a:"เดิมเคลื่อนที่แบบ snap และอัปเกรดเป็นแค่ตัวเลข"},
+{t:"ปรับดีไซน์ศัตรู", k:"partial", p:`อุกกาบาตมันไม่เริ่ด`, a:"ศัตรูเดิมแบน ไม่มีรายละเอียด"},
+{t:"ขอโค้ดเต็มไปใส่ VS Code", k:"partial", p:`ขอโค้ดไปใส่ VS Code
+เอาเป็นโค้ด`, a:"AI ส่งไฟล์แนบอีกครั้ง จึงต้องย้ำว่าเอาเป็นโค้ด"}
+]}]}
+];
+
+const TAG = {partial:"บันทึกบางส่วน", summary:"สรุป"};
+const tabs = document.getElementById("tabs");
+const content = document.getElementById("content");
+
+function el(tag, cls, text){ const e=document.createElement(tag); if(cls) e.className=cls; if(text!=null) e.textContent=text; return e; }
+
+function render(id){
+  const g = GAMES.find(x=>x.id===id) || GAMES[0];
+  [...tabs.children].forEach(b=>b.setAttribute("aria-selected", b.dataset.id===g.id ? "true":"false"));
+  content.innerHTML="";
+  const head = el("div","game-head");
+  head.appendChild(el("h2",null,g.name));
+  const total = g.groups.reduce((n,gr)=>n+(gr.rounds?gr.rounds.length:0),0);
+  head.appendChild(el("div","meta",`${g.genre} · ผู้พัฒนา ${g.owner} · ${total} รอบ`));
+  content.appendChild(head);
+  g.groups.forEach(gr=>{
+    if(gr.title) content.appendChild(el("div","group-title",gr.title));
+    if(gr.missing){ content.appendChild(el("div","empty",gr.missing)); return; }
+    const ol = el("ol","rounds");
+    gr.rounds.forEach((r,i)=>{
+      const li = el("li","round");
+      li.appendChild(el("div","num",String(i+1)));
+      const h = el("h3",null,r.t);
+      if(r.k){ h.appendChild(el("span","tag",TAG[r.k])); }
+      li.appendChild(h);
+      li.appendChild(el("div","prompt",r.p));
+      if(r.a){ const p=el("p","after"); const b=el("b",null,"สิ่งที่พบหลังรอบนี้: "); p.appendChild(b); p.appendChild(document.createTextNode(r.a)); li.appendChild(p); }
+      ol.appendChild(li);
+    });
+    content.appendChild(ol);
+  });
+  try{ localStorage.setItem("gs-log-tab", g.id); }catch(e){}
+}
+
+GAMES.forEach(g=>{
+  const b = el("button",null,g.name);
+  b.type="button"; b.dataset.id=g.id; b.setAttribute("role","tab");
+  b.addEventListener("click",()=>{ render(g.id); history.replaceState(null,"","#"+g.id); });
+  tabs.appendChild(b);
+});
+
+let start = location.hash.slice(1);
+if(!start){ try{ start = localStorage.getItem("gs-log-tab") || ""; }catch(e){ start=""; } }
+render(start || GAMES[0].id);
+</script>
+</body>
+</html>
